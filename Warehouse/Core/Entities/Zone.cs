@@ -52,6 +52,7 @@ public class ZoneAggregate
 
 public class Zone : BaseEntity
 {
+    public string Name { get; set; }
     public List<Container> Containers { get; private set; }
     public double CostToStoreForSmallContainer => CalculateCostForStoringSingleContainer(MaxCapacity);
     public double MaxCapacity { get; set; }

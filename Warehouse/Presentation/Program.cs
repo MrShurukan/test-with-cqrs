@@ -1,6 +1,13 @@
-var builder = WebApplication.CreateBuilder(args);
-var app = builder.Build();
+using Application.Infrastructure.Context;
+using Microsoft.EntityFrameworkCore;
 
-app.MapGet("/", () => "Hello World!");
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<ApplicationContext>(opt =>
+{
+    opt.UseNpgsql(File.ReadAllText(".dbdata"));
+});
+
+var app = builder.Build();
 
 app.Run();
