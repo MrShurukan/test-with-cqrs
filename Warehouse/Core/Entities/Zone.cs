@@ -1,46 +1,48 @@
 ﻿using System.Diagnostics.Contracts;
 using Core.Exceptions;
 using SharedClasses;
-using SharedClasses.Application.Aggregate;
 
 namespace Core.Entities;
 
 #region Агрегат
 
-public class ZoneAggregate : Aggregate<Zone>
+public class ZoneAggregate
 {
-    public ZoneAggregate(Zone zone) : base(zone)
+    private readonly Zone _zone;
+
+    public ZoneAggregate(Zone zone)
     {
+        _zone = zone;
     }
 
     public void AddContainer(Container container)
     {
-        var costForStoringContainer = Entity.CalculateCostForStoring(container);
-        if (Entity.CurrentCapacity + costForStoringContainer > Entity.MaxCapacity)
+        var costForStoringContainer = _zone.CalculateCostForStoring(container);
+        if (_zone.CurrentCapacity + costForStoringContainer > _zone.MaxCapacity)
         {
             ExtendZoneCapacity(costForStoringContainer);
         }
         
-        Entity.Containers.Add(container);
-        Entity.AddEvent(new ContainerAddedToZoneEvent(Entity, container));
+        _zone.Containers.Add(container);
+        _zone.AddEvent(new ContainerAddedToZoneEvent(_zone, container));
     }
 
     public void RemoveContainer(Container container)
     {
-        Entity.Containers.Remove(container);
-        Entity.AddEvent(new ContainerRemovedFromZoneEvent(Entity, container));
+        _zone.Containers.Remove(container);
+        _zone.AddEvent(new ContainerRemovedFromZoneEvent(_zone, container));
     }
 
     private const double MaximumPossibleCapacity = 1000.0;
     public void ExtendZoneCapacity(double amount)
     {
-        Entity.MaxCapacity += amount;
+        _zone.MaxCapacity += amount;
         
         // Случайное правило, чтобы жизнь не казалась мёдом
-        if (Entity.MaxCapacity >= MaximumPossibleCapacity)
-            throw new ZoneExceededMaximumCapacityException(MaximumPossibleCapacity, Entity.MaxCapacity);
+        if (_zone.MaxCapacity >= MaximumPossibleCapacity)
+            throw new ZoneExceededMaximumCapacityException(MaximumPossibleCapacity, _zone.MaxCapacity);
         
-        Entity.AddEvent(new ZoneCapacityExtended(Entity, Entity.MaxCapacity, amount));
+        _zone.AddEvent(new ZoneCapacityExtended(_zone, _zone.MaxCapacity, amount));
     }
 }
 

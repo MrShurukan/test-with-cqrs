@@ -1,5 +1,4 @@
 ﻿using SharedClasses;
-using SharedClasses.Application.Aggregate;
 
 namespace Core.Entities;
 
@@ -14,10 +13,13 @@ public interface IContainerRepository
 
 #region Агрегат
 
-public class ContainerAggregate : Aggregate<Container>
+public class ContainerAggregate
 {
-    public ContainerAggregate(Container container) : base(container)
+    private readonly Container _container;
+
+    public ContainerAggregate(Container container)
     {
+        _container = container;
     }
 }
 
