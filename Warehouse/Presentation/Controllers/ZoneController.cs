@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Application.Features.ZoneFeatures;
+using Microsoft.AspNetCore.Mvc;
 using Presentation.Controllers.Common;
 
 namespace Presentation.Controllers;
@@ -12,8 +13,8 @@ public class ZoneController : ApiControllerBase
     }
     
     [HttpPost]
-    public async Task<IActionResult> PostZone()
+    public async Task<IActionResult> CreateZone(CreateZoneCommand command)
     {
-        return Ok();
+        return Ok(await Mediator.Send(command));
     }
 }
