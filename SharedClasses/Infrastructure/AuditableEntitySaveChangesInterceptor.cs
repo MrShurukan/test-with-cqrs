@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
-namespace SharedClasses;
+namespace SharedClasses.Infrastructure;
 
 public class AuditableEntitySaveChangesInterceptor : SaveChangesInterceptor
 {

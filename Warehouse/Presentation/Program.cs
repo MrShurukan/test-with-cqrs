@@ -1,12 +1,8 @@
-using Application.Infrastructure.Context;
-using Microsoft.EntityFrameworkCore;
+using Presentation;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<ApplicationContext>(opt =>
-{
-    opt.UseNpgsql(File.ReadAllText(".dbdata"));
-});
+ConfigureServices.Configure(builder);
 
 var app = builder.Build();
 
